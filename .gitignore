@@ -293,3 +293,5 @@ psd
 thumb
 sketch
 
+### Custom
+*.pem
