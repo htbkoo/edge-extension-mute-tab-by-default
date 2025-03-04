@@ -1,0 +1,31 @@
+{
+  "manifest_version": 3,
+  "name": "mute-tab-by-default",
+  "version": "0.1.0",
+  "description": "A lightweight extension to mute all newly created tabs by default",
+  "icons": {
+    "16": "icons/16px-Mute_Icon.svg.png",
+    "32": "icons/32px-Mute_Icon.svg.png",
+    "64": "icons/64px-Mute_Icon.svg.png",
+    "128": "icons/128px-Mute_Icon.svg.png",
+    "256": "icons/256px-Mute_Icon.svg.png"
+  },
+  "background": {
+    "service_worker": "service-worker.js"
+  },
+  "action": {
+    "default_icon": {
+      "16": "icons/16px-Mute_Icon.svg.png",
+      "32": "icons/32px-Mute_Icon.svg.png",
+      "64": "icons/64px-Mute_Icon.svg.png",
+      "128": "icons/128px-Mute_Icon.svg.png",
+      "256": "icons/256px-Mute_Icon.svg.png"
+    }
+  },
+  "permissions": [
+    "scripting",
+    "activeTab",
+    "tabs"
+  ],
+  "author": "htbkoo"
+}
