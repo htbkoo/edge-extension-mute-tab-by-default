@@ -8,6 +8,4 @@ chrome.tabs.onCreated.addListener(async (tab) => {
   } catch (error) {
     console.error(error);
   }
-})
-
-
+});
