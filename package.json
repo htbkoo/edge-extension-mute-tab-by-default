@@ -20,5 +20,8 @@
   "bugs": {
     "url": "https://github.com/htbkoo/edge-extension-mute-tab-by-default/issues"
   },
-  "homepage": "https://github.com/htbkoo/edge-extension-mute-tab-by-default#readme"
+  "homepage": "https://github.com/htbkoo/edge-extension-mute-tab-by-default#readme",
+  "devDependencies": {
+    "prettier": "^3.5.3"
+  }
 }
