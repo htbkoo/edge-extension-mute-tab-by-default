@@ -1,0 +1,78 @@
+// reference: https://learn.microsoft.com/en-us/microsoft-edge/extensions-chromium/getting-started/manifest-format?tabs=v3#format-of-manifestjson-for-extensions
+{
+  // Required
+  "manifest_version": 3,
+  "name": "My V3 Extension",
+  "version": "versionString",
+
+  // Recommended
+  "action": {...},
+  "default_locale": "en",
+  "description": "A plain-text description",
+  "icons": {...},
+
+  // Optional
+  "action": ...,
+  "author": ...,
+  "automation": ...,
+  "background": {
+    // If `background` is included, `service_ worker` is required
+    "service_worker": ...
+  },
+  "chrome_settings_overrides": {...},
+  "chrome_url_overrides": {...},
+  "commands": {...},
+  "content_capabilities": ...,
+  "content_scripts": [{...}],
+  "content_security_policy": "policyString",
+  "converted_from_user_script": ...,
+  "current_locale": ...,
+  "declarative_net_request": ...,
+  "devtools_page": "devtools.html",
+  "differential_fingerprint": ...,
+  "event_rules": [{...}],
+  "externally_connectable": {
+    "matches": ["*://*.contoso.com/*"]
+  },
+  "file_browser_handlers": [...],
+  "file_system_provider_capabilities": {
+    "configurable": true,
+    "multiple_mounts": true,
+    "source": "network"
+  },
+  "homepage_url": "http://path/to/homepage",
+  "host_permissions": [...],
+  "import": [{"id": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa"}],
+  "incognito": "spanning, split, or not_allowed",
+  "input_components": ...,
+  "key": "publicKey",
+  "minimum_chrome_version": "versionString",
+  "nacl_modules": [...],
+  "natively_connectable": ...,
+  "oauth2": ...,
+  "offline_enabled": true,
+  "omnibox": {
+    "keyword": "aString"
+  },
+  "optional_permissions": ["tabs"],
+  "options_page": "options.html",
+  "options_ui": {
+    "chrome_style": true,
+    "page": "options.html"
+  },
+  "permissions": ["..."],
+  "platforms": ...,
+  "replacement_web_app": ...,
+  "requirements": {...},
+  "sandbox": [...],
+  "short_name": "Short Name",
+  "side_panel": {...},
+  "storage": {
+    "managed_schema": "schema.json"
+  },
+  "system_indicator": ...,
+  "tts_engine": {...},
+  "update_url": "http://path/to/updateInfo.xml",
+  "version_name": "aString",
+  "web_accessible_resources": [...]
+}
