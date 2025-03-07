@@ -1,0 +1,4 @@
+{
+  // reference: https://github.com/total-typescript/tsconfig
+  "extends": "@total-typescript/tsconfig/bundler/dom",
+}
