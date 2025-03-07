@@ -24,6 +24,7 @@
   },
   "homepage": "https://github.com/htbkoo/edge-extension-mute-tab-by-default#readme",
   "devDependencies": {
+    "esbuild": "^0.25.0",
     "prettier": "^3.5.3"
   }
 }
