@@ -1,6 +1,6 @@
 {
   "name": "edge-extension-mute-tab-by-default",
-  "version": "0.1.0",
+  "version": "0.2.0",
   "description": "A lightweight extension to mute all newly created tabs by default",
   "main": "index.js",
   "scripts": {
