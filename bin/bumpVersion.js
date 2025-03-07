@@ -9,7 +9,7 @@ const getNewVersion = (version) => {
     throw new Error(`Version ${version} is not in the format of x.y.z`);
   }
 
-  const [major, minor, patch] = versionParts;
+  const [major, minor, _] = versionParts;
 
   const minorVersion = parseInt(minor);
   if (!Number.isInteger(minorVersion)) {
@@ -44,17 +44,9 @@ const getNewVersion = (version) => {
 (async () => {
   console.log("Bumping version of `edge-extension-mute-tab-by-default`");
 
-  const path = require("path");
   const fs = require("node:fs/promises");
 
-  const { cpWithLogging, isFileExist } = require("./utils");
-  const {
-    BUILD_FOLDER_PATH,
-    PROJECT_ROOT_PATH,
-    SRC_FOLDER_PATH,
-    MANIFEST_PATH,
-    PACKAGE_JSON_PATH,
-  } = require("./constants");
+  const { MANIFEST_PATH, PACKAGE_JSON_PATH } = require("./constants");
 
   const manifestString = await fs.readFile(MANIFEST_PATH, { encoding: "utf8" });
   const manifestJson = JSON.parse(manifestString);
@@ -80,8 +72,6 @@ const getNewVersion = (version) => {
 
   // Modify the version in-place to reserve the order of the keys
   manifestJson.version = newVersion;
-
-
 
   packageJson.version = newVersion;
 
