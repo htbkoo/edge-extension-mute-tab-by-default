@@ -11,7 +11,7 @@
     "256": "icons/256px-Mute_Icon.svg.png"
   },
   "background": {
-    "service_worker": "src/service-worker/service-worker.js"
+    "service_worker": "service-worker.js"
   },
   "action": {
     "default_icon": {
