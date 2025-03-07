@@ -6,9 +6,11 @@
 
   const { cpWithLogging, isFileExist } = require("./utils");
 
-  const PROJECT_ROOT_PATH = path.normalize(`${__dirname}/..`);
-  const SRC_FOLDER_PATH = path.normalize(`${PROJECT_ROOT_PATH}/src`);
-  const BUILD_FOLDER_PATH = path.normalize(`${PROJECT_ROOT_PATH}/build`);
+  const {
+    BUILD_FOLDER_PATH,
+    PROJECT_ROOT_PATH,
+    SRC_FOLDER_PATH,
+  } = require("./constants");
 
   if (await isFileExist(BUILD_FOLDER_PATH)) {
     console.log("Deleting build/ folder");
