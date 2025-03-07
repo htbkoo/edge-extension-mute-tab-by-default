@@ -13,6 +13,23 @@ const isFileExist = (path) => {
   });
 };
 
+/**
+ *
+ * @param src {string}
+ * @param dest {string}
+ * @param filenameForLogging {string | undefined}
+ * @returns {Promise<void>}
+ */
+const cpWithLogging = async (src, dest, filenameForLogging = undefined) => {
+  const fs = require("node:fs/promises");
+
+  filenameForLogging = filenameForLogging ?? src;
+
+  console.log(`Copying ${filenameForLogging}`);
+  await fs.cp(src, dest, { recursive: true });
+  console.log(`Copied ${filenameForLogging}`);
+};
+
 (async () => {
   console.log("Building `edge-extension-mute-tab-by-default`");
 
@@ -21,16 +38,7 @@ const isFileExist = (path) => {
 
   const PROJECT_ROOT_PATH = path.normalize(`${__dirname}/..`);
   const SRC_FOLDER_PATH = path.normalize(`${PROJECT_ROOT_PATH}/src`);
-  const SERVICE_WORKER_SCRIPT_FILENAME = `service-worker.js`;
-  const SERVICE_WORKER_SCRIPT_PATH = path.normalize(
-    `${SRC_FOLDER_PATH}/service-worker/${SERVICE_WORKER_SCRIPT_FILENAME}`,
-  );
-  const BUILD_FOLDER_PATH = path.normalize(
-    `${PROJECT_ROOT_PATH}/build`,
-  );
-  const BUILD_SERVICE_WORKER_SCRIPT_PATH = path.normalize(
-    `${BUILD_FOLDER_PATH}/${SERVICE_WORKER_SCRIPT_FILENAME}`,
-  );
+  const BUILD_FOLDER_PATH = path.normalize(`${PROJECT_ROOT_PATH}/build`);
 
   if (await isFileExist(BUILD_FOLDER_PATH)) {
     console.log("Deleting build/ folder");
@@ -42,12 +50,35 @@ const isFileExist = (path) => {
   await fs.mkdir(BUILD_FOLDER_PATH);
   console.log("Created build/ folder");
 
-  console.log("Copying service-worker.js");
-  await fs.copyFile(
+  const SERVICE_WORKER_SCRIPT_FILENAME = `service-worker.js`;
+  const SERVICE_WORKER_SCRIPT_PATH = path.normalize(
+    `${SRC_FOLDER_PATH}/service-worker/${SERVICE_WORKER_SCRIPT_FILENAME}`,
+  );
+  const BUILD_SERVICE_WORKER_SCRIPT_PATH = path.normalize(
+    `${BUILD_FOLDER_PATH}/${SERVICE_WORKER_SCRIPT_FILENAME}`,
+  );
+  await cpWithLogging(
     SERVICE_WORKER_SCRIPT_PATH,
     BUILD_SERVICE_WORKER_SCRIPT_PATH,
   );
-  console.log("Copied service-worker.js");
+
+  const MANIFEST_FILENAME = `manifest.json`;
+  const MANIFEST_PATH = path.normalize(
+    `${PROJECT_ROOT_PATH}/${MANIFEST_FILENAME}`,
+  );
+  const BUILD_MANIFEST_PATH = path.normalize(
+    `${BUILD_FOLDER_PATH}/${MANIFEST_FILENAME}`,
+  );
+  await cpWithLogging(MANIFEST_PATH, BUILD_MANIFEST_PATH);
+
+  const ICONS_FOLDER_NAME = `icons`;
+  const ICONS_PATH = path.normalize(
+    `${PROJECT_ROOT_PATH}/${ICONS_FOLDER_NAME}`,
+  );
+  const BUILD_ICONS_PATH = path.normalize(
+    `${BUILD_FOLDER_PATH}/${ICONS_FOLDER_NAME}`,
+  );
+  await cpWithLogging(ICONS_PATH, BUILD_ICONS_PATH);
 
   console.log("Build complete");
 })();
