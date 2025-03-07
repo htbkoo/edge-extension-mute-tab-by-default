@@ -1,6 +1,6 @@
 {
   "manifest_version": 3,
-  "name": "mute-tab-by-default",
+  "name": "Mute Tab By Default",
   "version": "0.4.0",
   "description": "A lightweight extension to mute all newly created tabs by default",
   "icons": {
