@@ -22,10 +22,6 @@
       "256": "icons/256px-Mute_Icon.svg.png"
     }
   },
-  "permissions": [
-    "scripting",
-    "activeTab",
-    "tabs"
-  ],
+  "permissions": [],
   "author": "htbkoo"
 }
