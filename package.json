@@ -23,6 +23,7 @@
   },
   "homepage": "https://github.com/htbkoo/edge-extension-mute-tab-by-default#readme",
   "devDependencies": {
+    "nodemon": "^3.1.9",
     "prettier": "^3.5.3"
   }
 }
