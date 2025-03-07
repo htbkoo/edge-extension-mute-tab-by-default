@@ -4,7 +4,8 @@
   "description": "A lightweight extension to mute all newly created tabs by default",
   "main": "index.js",
   "scripts": {
-    "test": "jest"
+    "test": "jest",
+    "build": "node bin/build.js"
   },
   "repository": {
     "type": "git",
