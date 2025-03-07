@@ -72,11 +72,11 @@ const getNewVersion = (version) => {
 
   await fs.writeFile(
     MANIFEST_PATH,
-    JSON.stringify({ ...manifestJson, version: newVersion }, null, 2),
+    JSON.stringify({ ...manifestJson, version: newVersion }, null, 2) + "\n",
   );
   await fs.writeFile(
     PACKAGE_JSON_PATH,
-    JSON.stringify({ ...packageJson, version: newVersion }, null, 2),
+    JSON.stringify({ ...packageJson, version: newVersion }, null, 2) + "\n",
   );
 
   console.log("Bum version complete");
