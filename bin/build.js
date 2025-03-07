@@ -5,11 +5,12 @@
   const fs = require("node:fs/promises");
 
   const { cpWithLogging, isFileExist } = require("./utils");
-
   const {
     BUILD_FOLDER_PATH,
     PROJECT_ROOT_PATH,
     SRC_FOLDER_PATH,
+    MANIFEST_FILENAME,
+    MANIFEST_PATH,
   } = require("./constants");
 
   if (await isFileExist(BUILD_FOLDER_PATH)) {
@@ -34,10 +35,6 @@
     BUILD_SERVICE_WORKER_SCRIPT_PATH,
   );
 
-  const MANIFEST_FILENAME = `manifest.json`;
-  const MANIFEST_PATH = path.normalize(
-    `${PROJECT_ROOT_PATH}/${MANIFEST_FILENAME}`,
-  );
   const BUILD_MANIFEST_PATH = path.normalize(
     `${BUILD_FOLDER_PATH}/${MANIFEST_FILENAME}`,
   );
