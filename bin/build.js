@@ -3,6 +3,7 @@
 
   const path = require("path");
   const fs = require("node:fs/promises");
+  const esbuild = require("esbuild");
 
   const { cpWithLogging, isFileExist } = require("./utils");
   const {
@@ -30,10 +31,18 @@
   const BUILD_SERVICE_WORKER_SCRIPT_PATH = path.normalize(
     `${BUILD_FOLDER_PATH}/${SERVICE_WORKER_SCRIPT_FILENAME}`,
   );
-  await cpWithLogging(
-    SERVICE_WORKER_SCRIPT_PATH,
-    BUILD_SERVICE_WORKER_SCRIPT_PATH,
-  );
+
+  console.log("Building service-worker script");
+  await esbuild.build({
+    entryPoints: [SERVICE_WORKER_SCRIPT_PATH],
+    outfile: BUILD_SERVICE_WORKER_SCRIPT_PATH,
+    // reference: https://esbuild.github.io/getting-started/#bundling-for-the-browser
+    bundle: true,
+    minify: true,
+    sourcemap: true,
+    target: ['chrome58', 'firefox57', 'safari11', 'edge16'],
+  });
+  console.log("Built service-worker script");
 
   const BUILD_MANIFEST_PATH = path.normalize(
     `${BUILD_FOLDER_PATH}/${MANIFEST_FILENAME}`,
