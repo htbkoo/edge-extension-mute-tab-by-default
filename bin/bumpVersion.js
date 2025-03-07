@@ -70,11 +70,14 @@ const getNewVersion = (version) => {
   const version = manifestJson.version;
   const newVersion = getNewVersion(version);
 
-  // Modify the version in-place to reserve the order of the keys
-  manifestJson.version = newVersion;
-  await fs.writeFile(MANIFEST_PATH, JSON.stringify(manifestJson, null, 2));
-  packageJson.version = newVersion;
-  await fs.writeFile(PACKAGE_JSON_PATH, JSON.stringify(packageJson, null, 2));
+  await fs.writeFile(
+    MANIFEST_PATH,
+    JSON.stringify({ ...manifestJson, version: newVersion }, null, 2),
+  );
+  await fs.writeFile(
+    PACKAGE_JSON_PATH,
+    JSON.stringify({ ...packageJson, version: newVersion }, null, 2),
+  );
 
   console.log("Bum version complete");
 })();
