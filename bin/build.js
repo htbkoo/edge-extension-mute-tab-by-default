@@ -14,7 +14,7 @@
 
   if (await isFileExist(BUILD_FOLDER_PATH)) {
     console.log("Deleting build/ folder");
-    await fs.rmdir(BUILD_FOLDER_PATH, { recursive: true });
+    await fs.rm(BUILD_FOLDER_PATH, { recursive: true });
     console.log("Deleted build/ folder");
   }
 
