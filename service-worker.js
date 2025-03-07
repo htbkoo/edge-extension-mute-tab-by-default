@@ -1,4 +1,4 @@
-console.debug("=>(service-worker.js:2) scripte loaded");
+console.debug("=>(service-worker.js:2) script loaded");
 
 /**
  * Reference: https://developer.mozilla.org/en-US/docs/Mozilla/Add-ons/WebExtensions/API/tabs/onCreated
