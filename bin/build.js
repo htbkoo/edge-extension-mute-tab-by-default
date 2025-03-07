@@ -24,12 +24,11 @@
   await fs.mkdir(BUILD_FOLDER_PATH);
   console.log("Created build/ folder");
 
-  const SERVICE_WORKER_SCRIPT_FILENAME = `service-worker.js`;
   const SERVICE_WORKER_SCRIPT_PATH = path.normalize(
-    `${SRC_FOLDER_PATH}/service-worker/${SERVICE_WORKER_SCRIPT_FILENAME}`,
+    `${SRC_FOLDER_PATH}/service-worker/service-worker.ts`,
   );
   const BUILD_SERVICE_WORKER_SCRIPT_PATH = path.normalize(
-    `${BUILD_FOLDER_PATH}/${SERVICE_WORKER_SCRIPT_FILENAME}`,
+    `${BUILD_FOLDER_PATH}/service-worker.js`,
   );
 
   console.log("Building service-worker script");
