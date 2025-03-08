@@ -21,7 +21,7 @@ const getNewVersion = (version) => {
     throw new Error(`Version ${version} is not in the format of x.y.z`);
   }
 
-  const [major, minor, _] = versionParts;
+  const [major, minor] = versionParts;
 
   const minorVersion = parseInt(minor);
   if (!Number.isInteger(minorVersion)) {
