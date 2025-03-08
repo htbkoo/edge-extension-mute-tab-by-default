@@ -2,6 +2,10 @@
 import * as React from "react";
 import { StrictMode } from "react";
 import { createRoot } from "react-dom/client";
+
+// Reference: https://react-bootstrap.netlify.app/docs/getting-started/introduction#css
+import 'bootstrap/dist/css/bootstrap.min.css';
+
 import "./index.css";
 import { App } from "./App";
 
