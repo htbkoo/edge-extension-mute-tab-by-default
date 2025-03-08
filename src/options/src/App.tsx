@@ -4,6 +4,7 @@ import { useCallback } from "react";
 import Button from "react-bootstrap/Button";
 import Card from "react-bootstrap/Card";
 import Form from "react-bootstrap/Form";
+import Toast from "react-bootstrap/Toast";
 import type { FormControlProps } from "react-bootstrap/FormControl";
 import FloatingLabel from "react-bootstrap/FloatingLabel";
 
@@ -101,7 +102,16 @@ type FormPayloadType =
   | ChangeListPayloadType
   | SyncFromStoragePayloadType;
 
+const TOAST_STYLE = {
+  position: "fixed",
+  bottom: "2rem",
+  right: "2rem",
+} as const;
+
 export const App = () => {
+  const [showSuccess, setShowSuccess] = React.useState(false);
+  const [showFailed, setShowFailed] = React.useState(false);
+
   const [state, dispatch] = React.useReducer(
     (prevState, action: FormPayloadType) => {
       switch (action.type) {
@@ -155,11 +165,11 @@ export const App = () => {
   const handleSave = React.useCallback(async () => {
     try {
       await ChromeLocalStorage.setConfigs(state);
-      //   TODO: show toast
-      console.log("debugdebug=>(App.tsx:136) saved");
+      // TODO: multiple toast when saved multiple times
+      setShowSuccess(true);
     } catch (e) {
-      //   TODO: show toast
-      console.log("debugdebug=>(App.tsx:139) error", e);
+      // TODO: show error message to user?
+      setShowFailed(true);
     }
   }, [state]);
 
@@ -203,6 +213,39 @@ export const App = () => {
           <Button variant="primary" className="mt-3" onClick={handleSave}>
             Save
           </Button>
+
+          <Toast
+            onClose={useCallback(() => setShowFailed(false), [])}
+            show={showFailed}
+            delay={3000}
+            bg="danger"
+            autohide
+            style={TOAST_STYLE}
+          >
+            <Toast.Header>
+              <strong className="me-auto">Failed to save configs!</strong>
+            </Toast.Header>
+            <Toast.Body>
+              Unfortunately, it has failed to save the configs, try again later
+              or report the error to
+              https://github.com/htbkoo/edge-extension-mute-tab-by-default
+            </Toast.Body>
+          </Toast>
+          <Toast
+            onClose={useCallback(() => setShowSuccess(false), [])}
+            show={showSuccess}
+            delay={3000}
+            bg="success"
+            autohide
+            style={TOAST_STYLE}
+          >
+            <Toast.Header>
+              <strong className="me-auto">Configs saved!</strong>
+            </Toast.Header>
+            <Toast.Body>
+              The new configs will be used for new tabs created from now on.
+            </Toast.Body>
+          </Toast>
         </fieldset>
       </Form>
     </>
