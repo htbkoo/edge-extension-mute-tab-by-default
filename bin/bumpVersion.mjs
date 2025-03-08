@@ -1,6 +1,32 @@
 import fs from "node:fs/promises";
+import { exec as execCallback } from "child_process";
 
 import { MANIFEST_PATH, PACKAGE_JSON_PATH } from "./constants.mjs";
+
+/**
+ * Promisified {@link child_process.exec}
+ * @param command {string}
+ */
+const exec = (command) =>
+  new Promise((resolve, reject) => {
+    execCallback(command, (error, stdout, stderr) => {
+      if (error) {
+        reject({
+          error: stderr,
+          type: "error",
+        });
+      } else if (stderr) {
+        reject({
+          error: stderr,
+          type: "stderr",
+        });
+      } else {
+        resolve({
+          data: stdout,
+        });
+      }
+    });
+  });
 
 /**
  * Get new version string based on the current version
