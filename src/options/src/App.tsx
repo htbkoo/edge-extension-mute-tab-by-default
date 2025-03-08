@@ -8,8 +8,8 @@ import type { FormControlProps } from "react-bootstrap/FormControl";
 import FloatingLabel from "react-bootstrap/FloatingLabel";
 
 import "./App.css";
-import { STORAGE_KEY_CONFIGS } from "../../constants";
 import type { ConfigsType } from "../../types";
+import { ChromeLocalStorage } from "../../storage";
 
 const DEFAULT_FORM_STATE: ConfigsType = {
   isWhitelistMode: true,
@@ -81,6 +81,10 @@ type ToggleModePayloadType = {
   type: "TOGGLE_MODE";
   data: boolean;
 };
+type SyncFromStoragePayloadType = {
+  type: "SYNC_FROM_STORAGE";
+  data: ConfigsType;
+};
 type ChangeListPayloadType = {
   type: "CHANGE_LIST";
   data:
@@ -92,7 +96,10 @@ type ChangeListPayloadType = {
       };
 };
 
-type FormPayloadType = ToggleModePayloadType | ChangeListPayloadType;
+type FormPayloadType =
+  | ToggleModePayloadType
+  | ChangeListPayloadType
+  | SyncFromStoragePayloadType;
 
 export const App = () => {
   const [state, dispatch] = React.useReducer(
@@ -108,10 +115,27 @@ export const App = () => {
             ...prevState,
             ...action.data,
           };
+        case "SYNC_FROM_STORAGE":
+          return {
+            ...prevState,
+            ...action.data,
+          };
       }
     },
     DEFAULT_FORM_STATE,
   );
+
+  // TODO: implement loading state when loading from storage
+  React.useEffect(() => {
+    ChromeLocalStorage.getConfigs().then((configs) => {
+      if (configs) {
+        dispatch({
+          type: "SYNC_FROM_STORAGE",
+          data: configs,
+        });
+      }
+    });
+  }, []);
 
   const { isWhitelistMode, whitelist, blacklist } = state;
 
@@ -130,10 +154,12 @@ export const App = () => {
 
   const handleSave = React.useCallback(async () => {
     try {
-      await chrome.storage.local.set({ [STORAGE_KEY_CONFIGS]: state });
+      await ChromeLocalStorage.setConfigs(state);
       //   TODO: show toast
+      console.log("debugdebug=>(App.tsx:136) saved");
     } catch (e) {
       //   TODO: show toast
+      console.log("debugdebug=>(App.tsx:139) error", e);
     }
   }, [state]);
 
