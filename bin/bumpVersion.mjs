@@ -4,6 +4,10 @@ import * as childProcess from "child_process";
 import { MANIFEST_PATH, PACKAGE_JSON_PATH } from "./constants.mjs";
 import * as util from "node:util";
 
+/**
+ *
+ * @type {(command: string) => Promise<{stdout: string, stderr: any}>}
+ */
 const exec = util.promisify(childProcess.exec);
 
 /**
@@ -51,44 +55,25 @@ const getNewVersion = (version) => {
 
 /**
  * Add changes to git
- * @returns {Promise<void>}
+ * @param path
+ * @returns {Promise<{stdout: string, stderr: *}>}
  */
-const gitAdd = async (path) =>
-  new Promise((resolve, reject) => {
-    exec(`git add "${path}"`, (error, stdout, stderr) => {
-      if (error) {
-        console.error(`exec error: ${error}`);
-        reject(error);
-      } else if (stderr) {
-        console.error(`stderr: ${stderr}`);
-        reject(stderr);
-      } else {
-        console.log(`${stdout}`);
-        resolve();
-      }
-    });
-  });
+const gitAdd = async (path) => exec(`git add ${path}`);
 
 /**
  * Create a git commit
  * @param message {string}
- * @returns {Promise<void>}
+ * @returns {Promise<{stdout: string, stderr: *}>}
  */
-const gitCommitVersionBump = async (message) =>
-  new Promise((resolve, reject) => {
-    exec(`git commit "${message}"`, (error, stdout, stderr) => {
-      if (error) {
-        console.error(`exec error: ${error}`);
-        reject(error);
-      } else if (stderr) {
-        console.error(`stderr: ${stderr}`);
-        reject(stderr);
-      } else {
-        console.log(`${stdout}`);
-        resolve();
-      }
-    });
-  });
+const gitCommitVersionBump = async (message) => {
+  console.log(`Committing changes`);
+
+  await gitAdd(MANIFEST_PATH);
+  await gitAdd(PACKAGE_JSON_PATH);
+  await exec(`git commit -m "${message}"`);
+
+  console.log(`Committed changes`);
+};
 
 /**
  * Create a git tag
@@ -96,24 +81,17 @@ const gitCommitVersionBump = async (message) =>
  * @returns {Promise<void>}
  */
 const createGitTag = async (version) => {
+  console.log(`Creating Git tag for version: v${version}}`);
+
   const commitMessage = `chore(Version): Bump version to v${version}`;
 
   await gitCommitVersionBump(commitMessage);
-
-  try {
-    const { stdout, stderr } = await exec(
-      `git tag -a v0.9.0 -m "chore(Version): Bump version to v0.9.0`,
-    );
-    if (stderr) {
-      console.error(`stderr: ${stderr}`);
-      return;
-    } else {
-      console.log(`${stdout}`);
-    }
-  } catch (error) {
-    console.error(`exec error: ${error}`);
-    return;
+  const { stderr } = await exec(`git tag -a v${version} -m "${commitMessage}"`);
+  if (stderr) {
+    throw stderr;
   }
+
+  console.log(`Created Git tag for version: v${version}}`);
 };
 
 (async () => {
@@ -149,6 +127,8 @@ const createGitTag = async (version) => {
     PACKAGE_JSON_PATH,
     JSON.stringify({ ...packageJson, version: newVersion }, null, 2) + "\n",
   );
+
+  await createGitTag(newVersion);
 
   console.log("Bum version complete");
 })();
