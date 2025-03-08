@@ -8,7 +8,10 @@ console.debug("=>(service-worker.js) script loaded");
 let configsCache: null | ConfigsType = null;
 
 ChromeLocalStorage.listenOnChanged((storage) => {
+  console.debug("=>(service-worker.js) there are changes in storage");
+
   if (storage[STORAGE_KEY_CONFIGS]) {
+    console.debug("=>(service-worker.js) configs changed, loading again");
     configsCache = storage[STORAGE_KEY_CONFIGS].newValue;
   }
 });
@@ -16,7 +19,9 @@ ChromeLocalStorage.listenOnChanged((storage) => {
 const initConfigs = async () => {
   if (configsCache) {
     // lazy load to avoid unnecessary reads from storage for every tab creation
-    console.debug("=>(service-worker.js) configs already loaded, not loading again");
+    console.debug(
+      "=>(service-worker.js) configs already loaded, not loading again",
+    );
     return;
   }
 
