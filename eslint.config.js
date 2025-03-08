@@ -11,6 +11,10 @@ export default tseslint.config(
   tseslint.configs.recommended,
   // reference: https://typescript-eslint.io/troubleshooting/faqs/general#how-do-i-turn-on-a-typescript-eslint-rule
   {
+    env: {
+      // reference: https://stackoverflow.com/a/50513752/10734272
+      webextensions: true,
+    },
     ignores: ["dist", "build", "publish"],
     files: ["**/*.{js,jsx,ts,tsx}"],
     languageOptions: {
