@@ -2,9 +2,10 @@ import js from '@eslint/js'
 import globals from 'globals'
 import reactHooks from 'eslint-plugin-react-hooks'
 import reactRefresh from 'eslint-plugin-react-refresh'
+import onlyWarn from 'eslint-plugin-only-warn'
 
 export default [
-  { ignores: ['dist'] },
+  { ignores: ['dist', 'build', 'publish'] },
   {
     files: ['**/*.{js,jsx}'],
     languageOptions: {
@@ -19,6 +20,7 @@ export default [
     plugins: {
       'react-hooks': reactHooks,
       'react-refresh': reactRefresh,
+      "only-warn": onlyWarn,
     },
     rules: {
       ...js.configs.recommended.rules,
