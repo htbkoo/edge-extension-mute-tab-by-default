@@ -6,7 +6,8 @@
   "scripts": {
     "test": "jest",
     "build": "node bin/build.js",
-    "bumpVerion": "node bin/bumpVersion.js"
+    "bumpVerion": "node bin/bumpVersion.js",
+    "lint": "eslint ."
   },
   "repository": {
     "type": "git",
