@@ -6,8 +6,10 @@ import reactRefresh from "eslint-plugin-react-refresh";
 import onlyWarn from "eslint-plugin-only-warn";
 
 export default tseslint.config(
+  // reference: https://typescript-eslint.io/getting-started#step-2-configuration
   eslint.configs.recommended,
   tseslint.configs.recommended,
+  // reference: https://typescript-eslint.io/troubleshooting/faqs/general#how-do-i-turn-on-a-typescript-eslint-rule
   {
     ignores: ["dist", "build", "publish"],
     files: ["**/*.{js,jsx,ts,tsx}"],
