@@ -39,7 +39,7 @@
     bundle: true,
     minify: true,
     sourcemap: true,
-    target: ['chrome58', 'firefox57', 'safari11', 'edge16'],
+    target: ["chrome58", "firefox57", "safari11", "edge16"],
   });
   console.log("Built service-worker script");
 
