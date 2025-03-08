@@ -1,9 +1,6 @@
 // Reference: https://github.com/aelbore/esbuild-jest/issues/61#issuecomment-990032621
 import * as React from 'react'
 import { useState } from 'react'
-import reactLogo from './assets/react.svg'
-// import logo from '/Mute_Icon.svg'
-import logo from '../public/Mute_Icon.svg'
 import './App.css'
 
 function App() {
@@ -11,15 +8,8 @@ function App() {
 
   return (
     <>
-      <div>
-        <a href="https://vite.dev" target="_blank">
-          <img src={logo} className="logo" alt="Vite logo" />
-        </a>
-        <a href="https://react.dev" target="_blank">
-          <img src={reactLogo} className="logo react" alt="React logo" />
-        </a>
-      </div>
-      <h1>Vite + React</h1>
+      <h1>Mute Tab By Default</h1>
+
       <div className="card">
         <button onClick={() => setCount((count) => count + 1)}>
           count is {count}
