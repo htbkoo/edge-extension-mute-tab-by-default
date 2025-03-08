@@ -29,6 +29,16 @@ const initConfigs = async () => {
   }
 };
 
+const LINE_SEPARATOR = /\r?\n|\r|\n/g;
+
+/**
+ * This function splits the list by {@link LINE_SEPARATOR}
+ *
+ * Reference: https://stackoverflow.com/a/21712066
+ */
+const splitList = (list: string): Array<string> =>
+  list.split(LINE_SEPARATOR).filter(Boolean);
+
 /**
  * This function returns if the tab should be muted
  */
@@ -52,15 +62,10 @@ const shouldMuteTab = async (tab: chrome.tabs.Tab): Promise<boolean> => {
 
   const url = new URL(tabUrl);
   if (isWhitelistMode) {
-    const whitelistHostnames = new Set(whitelist.split("\n"));
-
-    console.log("debugdebug=>(service-worker.ts:58) ", whitelistHostnames, url.hostname);
-
+    const whitelistHostnames = new Set(splitList(whitelist));
     return !whitelistHostnames.has(url.hostname);
   } else {
-    const blacklistHostnames = new Set(blacklist.split("\n"));
-
-    console.log("debugdebug=>(service-worker.ts:64) ", blacklistHostnames, url.hostname);
+    const blacklistHostnames = new Set(splitList(blacklist));
     return blacklistHostnames.has(url.hostname);
   }
 };
