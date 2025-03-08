@@ -10,6 +10,7 @@
     "128": "icons/128px-Mute_Icon.svg.png",
     "256": "icons/256px-Mute_Icon.svg.png"
   },
+  "options_page": "options.html",
   "background": {
     "service_worker": "service-worker.js"
   },
