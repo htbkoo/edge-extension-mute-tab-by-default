@@ -1,6 +1,9 @@
+// Reference: https://github.com/aelbore/esbuild-jest/issues/61#issuecomment-990032621
+import * as React from 'react'
 import { useState } from 'react'
 import reactLogo from './assets/react.svg'
-import viteLogo from '/vite.svg'
+// import logo from '/Mute_Icon.svg'
+import logo from '../public/Mute_Icon.svg'
 import './App.css'
 
 function App() {
@@ -10,7 +13,7 @@ function App() {
     <>
       <div>
         <a href="https://vite.dev" target="_blank">
-          <img src={viteLogo} className="logo" alt="Vite logo" />
+          <img src={logo} className="logo" alt="Vite logo" />
         </a>
         <a href="https://react.dev" target="_blank">
           <img src={reactLogo} className="logo react" alt="React logo" />

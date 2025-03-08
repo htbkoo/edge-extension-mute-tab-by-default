@@ -1,9 +1,41 @@
 const buildOptionsPage = async () => {
+  const path = require("path");
+  const esbuild = require("esbuild");
+
   const { BUILD_FOLDER_PATH, SRC_FOLDER_PATH } = require("./constants");
   const { cpWithLogging } = require("./utils");
 
+  const OPTIONS_PAGE_FOLDER_PATH = path.normalize(`${SRC_FOLDER_PATH}/options`);
+
+  console.log("Building options page script");
+  await esbuild.build({
+    entryPoints: [`${OPTIONS_PAGE_FOLDER_PATH}/src/main.jsx`],
+    outfile: `${BUILD_FOLDER_PATH}/options.js`,
+    // reference: https://stackoverflow.com/a/77116077
+    loader: {
+      ".png": "dataurl",
+      ".svg": "dataurl",
+      ".js": "jsx",
+      ".jsx": "jsx",
+      ".ts": "tsx",
+      ".tsx": "tsx",
+    },
+    // reference: https://esbuild.github.io/getting-started/#bundling-for-the-browser
+    bundle: true,
+    minify: true,
+    sourcemap: true,
+    target: [
+      // reference: https://github.com/nuxt/vite/issues/110#issuecomment-850400562
+      "chrome60",
+      "edge18",
+      "firefox60",
+      "safari11",
+    ],
+  });
+  console.log("Built options page script");
+
   await cpWithLogging(
-    `${SRC_FOLDER_PATH}/options/index.html`,
+    `${OPTIONS_PAGE_FOLDER_PATH}/index.html`,
     `${BUILD_FOLDER_PATH}/options.html`,
   );
 };
@@ -49,7 +81,6 @@ const buildOptionsPage = async () => {
     bundle: true,
     minify: true,
     sourcemap: true,
-    target: ["chrome58", "firefox57", "safari11", "edge16"],
   });
   console.log("Built service-worker script");
 

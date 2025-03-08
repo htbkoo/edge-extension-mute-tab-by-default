@@ -1,3 +1,5 @@
+// Reference: https://github.com/aelbore/esbuild-jest/issues/61#issuecomment-990032621
+import * as React from 'react'
 import { StrictMode } from 'react'
 import { createRoot } from 'react-dom/client'
 import './index.css'
