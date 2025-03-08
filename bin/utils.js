@@ -1,13 +1,14 @@
+import fsCallback from "node:fs";
+import fs from "node:fs/promises";
+
 /**
  * Check if file exists, using {@link fs.access}
  * @param path {string}
  * @returns {Promise<boolean>}
  */
-const isFileExist = (path) => {
-  const fs = require("node:fs");
-
+export const isFileExist = (path) => {
   return new Promise((resolve) => {
-    fs.access(path, fs.constants.F_OK, (err) => {
+    fsCallback.access(path, fsCallback.constants.F_OK, (err) => {
       resolve(!err);
     });
   });
@@ -21,17 +22,10 @@ const isFileExist = (path) => {
  * @param filenameForLogging {string | undefined}
  * @returns {Promise<void>}
  */
-const cpWithLogging = async (src, dest, filenameForLogging = undefined) => {
-  const fs = require("node:fs/promises");
-
+export const cpWithLogging = async (src, dest, filenameForLogging = undefined) => {
   filenameForLogging = filenameForLogging ?? src;
 
   console.log(`Copying ${filenameForLogging}`);
   await fs.cp(src, dest, { recursive: true });
   console.log(`Copied ${filenameForLogging}`);
-};
-
-module.exports = {
-  isFileExist,
-  cpWithLogging,
 };

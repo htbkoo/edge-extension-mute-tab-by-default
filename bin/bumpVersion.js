@@ -1,3 +1,7 @@
+import fs from "node:fs/promises";
+
+import { MANIFEST_PATH, PACKAGE_JSON_PATH } from "./constants.js";
+
 /**
  * Get new version string based on the current version
  * @param version {string}
@@ -43,10 +47,6 @@ const getNewVersion = (version) => {
 
 (async () => {
   console.log("Bumping version of `edge-extension-mute-tab-by-default`");
-
-  const fs = require("node:fs/promises");
-
-  const { MANIFEST_PATH, PACKAGE_JSON_PATH } = require("./constants");
 
   const manifestString = await fs.readFile(MANIFEST_PATH, { encoding: "utf8" });
   const manifestJson = JSON.parse(manifestString);

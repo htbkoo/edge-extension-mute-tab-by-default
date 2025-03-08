@@ -1,10 +1,17 @@
+import path from "path";
+import fs from "node:fs/promises";
+import esbuild from "esbuild";
+
+import {
+  BUILD_FOLDER_PATH,
+  SRC_FOLDER_PATH,
+  PROJECT_ROOT_PATH,
+  MANIFEST_FILENAME,
+  MANIFEST_PATH,
+} from "./constants.js";
+import { cpWithLogging, isFileExist } from "./utils.js";
+
 const buildOptionsPage = async () => {
-  const path = require("path");
-  const esbuild = require("esbuild");
-
-  const { BUILD_FOLDER_PATH, SRC_FOLDER_PATH } = require("./constants");
-  const { cpWithLogging } = require("./utils");
-
   const OPTIONS_PAGE_FOLDER_PATH = path.normalize(`${SRC_FOLDER_PATH}/options`);
 
   console.log("Building options page script");
@@ -42,19 +49,6 @@ const buildOptionsPage = async () => {
 
 (async () => {
   console.log("Building `edge-extension-mute-tab-by-default`");
-
-  const path = require("path");
-  const fs = require("node:fs/promises");
-  const esbuild = require("esbuild");
-
-  const { cpWithLogging, isFileExist } = require("./utils");
-  const {
-    BUILD_FOLDER_PATH,
-    PROJECT_ROOT_PATH,
-    SRC_FOLDER_PATH,
-    MANIFEST_FILENAME,
-    MANIFEST_PATH,
-  } = require("./constants");
 
   if (await isFileExist(BUILD_FOLDER_PATH)) {
     console.log("Deleting build/ folder");
