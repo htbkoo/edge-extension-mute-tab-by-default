@@ -8,8 +8,8 @@ import {
   PROJECT_ROOT_PATH,
   MANIFEST_FILENAME,
   MANIFEST_PATH,
-} from "./constants.js";
-import { cpWithLogging, isFileExist } from "./utils.js";
+} from "./constants.mjs";
+import { cpWithLogging, isFileExist } from "./utils.mjs";
 
 const buildOptionsPage = async () => {
   const OPTIONS_PAGE_FOLDER_PATH = path.normalize(`${SRC_FOLDER_PATH}/options`);

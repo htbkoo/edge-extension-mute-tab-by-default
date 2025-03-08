@@ -1,6 +1,6 @@
 import fs from "node:fs/promises";
 
-import { MANIFEST_PATH, PACKAGE_JSON_PATH } from "./constants.js";
+import { MANIFEST_PATH, PACKAGE_JSON_PATH } from "./constants.mjs";
 
 /**
  * Get new version string based on the current version
