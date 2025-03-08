@@ -1,6 +1,6 @@
 // Reference: https://github.com/aelbore/esbuild-jest/issues/61#issuecomment-990032621
 import * as React from "react";
-import { useActionState, useCallback } from "react";
+import { useCallback } from "react";
 import Button from "react-bootstrap/Button";
 import Card from "react-bootstrap/Card";
 import Form from "react-bootstrap/Form";
@@ -15,11 +15,11 @@ interface FormStateType {
   blacklist: string;
 }
 
-const DEFAULT_FORM_STATE = {
+const DEFAULT_FORM_STATE: FormStateType = {
   isWhitelistMode: true,
   whitelist: "",
   blacklist: "",
-} as const satisfies FormStateType;
+} as const;
 
 const Mode = ({
   name,
@@ -95,15 +95,6 @@ type ChangeListPayloadType = {
         blacklist: string;
       };
 };
-type K = keyof ChangeListPayloadType["data"];
-
-const key: "whitelist" | "blacklist" = "whitelist";
-const x = {
-  type: "CHANGE_LIST",
-  data: {
-    [key]: "string",
-  },
-} satisfies ChangeListPayloadType;
 
 type FormPayloadType = ToggleModePayloadType | ChangeListPayloadType;
 
@@ -131,18 +122,17 @@ export const App = () => {
   //   DEFAULT_FORM_STATE,
   // );
 
-  const [state, dispatch] = React.useReducer((state, action) => {
-
-    switch (payload.type) {
+  const [state, dispatch] = React.useReducer((prevState, action: FormPayloadType) => {
+    switch (action.type) {
       case "TOGGLE_MODE":
         return {
           ...prevState,
-          isWhitelistMode: payload.data,
+          isWhitelistMode: action.data,
         };
       case "CHANGE_LIST":
         return {
           ...prevState,
-          ...payload.data,
+          ...action.data,
         };
     }
   }, DEFAULT_FORM_STATE);
@@ -150,8 +140,8 @@ export const App = () => {
   const { isWhitelistMode, whitelist, blacklist } = state;
 
   const createToggleModeDispatcher = React.useCallback(
-    (data: boolean) => () => formAction({ type: "TOGGLE_MODE", data }),
-    [formAction],
+    (data: boolean) => () => dispatch({ type: "TOGGLE_MODE", data }),
+    [dispatch],
   );
   // const createChangeListDispatcher = React.useCallback(
   //   (key: K) => (value: string) =>
@@ -181,11 +171,11 @@ export const App = () => {
             value={whitelist}
             onValueChange={React.useCallback(
               (value: string) =>
-                formAction({
+                dispatch({
                   type: "CHANGE_LIST",
                   data: { whitelist: value },
                 }),
-              [formAction],
+              [dispatch],
             )}
           />
           {/*<Form.Group className="my-5">*/}
@@ -225,14 +215,14 @@ export const App = () => {
               () => createToggleModeDispatcher(false),
               [createToggleModeDispatcher],
             )}
-            value={whitelist}
+            value={blacklist}
             onValueChange={React.useCallback(
               (value: string) =>
-                formAction({
+                dispatch({
                   type: "CHANGE_LIST",
                   data: { blacklist: value },
                 }),
-              [formAction],
+              [dispatch],
             )}
           />
           {/*<Form.Group className="my-5">*/}
@@ -264,8 +254,7 @@ export const App = () => {
           {/*  </Card>*/}
           {/*</Form.Group>*/}
 
-          {/* @ts-expect-error shut up */}
-          <Button variant="primary" className="mt-3" formAction={formAction}>
+          <Button variant="primary" className="mt-3">
             Save
           </Button>
         </fieldset>
