@@ -7,7 +7,7 @@ import onlyWarn from "eslint-plugin-only-warn";
 export default [
   { ignores: ["dist", "build", "publish"] },
   {
-    files: ["**/*.{js,jsx}"],
+    files: ["**/*.{js,jsx,ts,tsx}"],
     languageOptions: {
       ecmaVersion: 2020,
       globals: globals.browser,
