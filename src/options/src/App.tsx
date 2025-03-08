@@ -8,14 +8,10 @@ import type { FormControlProps } from "react-bootstrap/FormControl";
 import FloatingLabel from "react-bootstrap/FloatingLabel";
 
 import "./App.css";
+import { STORAGE_KEY_CONFIGS } from "../../constants";
+import type { ConfigsType } from "../../types";
 
-interface FormStateType {
-  isWhitelistMode: boolean;
-  whitelist: string;
-  blacklist: string;
-}
-
-const DEFAULT_FORM_STATE: FormStateType = {
+const DEFAULT_FORM_STATE: ConfigsType = {
   isWhitelistMode: true,
   whitelist: "",
   blacklist: "",
@@ -99,43 +95,23 @@ type ChangeListPayloadType = {
 type FormPayloadType = ToggleModePayloadType | ChangeListPayloadType;
 
 export const App = () => {
-  // const [state, formAction, isPending] = useActionState<
-  //   FormStateType,
-  //   FormPayloadType
-  // >(
-  //   React.useCallback((prevState, payload) => {
-  //     console.log("debugdebug=>(App.tsx:32) ", payload);
-  //
-  //     switch (payload.type) {
-  //       case "TOGGLE_MODE":
-  //         return {
-  //           ...prevState,
-  //           isWhitelistMode: payload.data,
-  //         };
-  //       case "CHANGE_LIST":
-  //         return {
-  //           ...prevState,
-  //           ...payload.data,
-  //         };
-  //     }
-  //   }, []),
-  //   DEFAULT_FORM_STATE,
-  // );
-
-  const [state, dispatch] = React.useReducer((prevState, action: FormPayloadType) => {
-    switch (action.type) {
-      case "TOGGLE_MODE":
-        return {
-          ...prevState,
-          isWhitelistMode: action.data,
-        };
-      case "CHANGE_LIST":
-        return {
-          ...prevState,
-          ...action.data,
-        };
-    }
-  }, DEFAULT_FORM_STATE);
+  const [state, dispatch] = React.useReducer(
+    (prevState, action: FormPayloadType) => {
+      switch (action.type) {
+        case "TOGGLE_MODE":
+          return {
+            ...prevState,
+            isWhitelistMode: action.data,
+          };
+        case "CHANGE_LIST":
+          return {
+            ...prevState,
+            ...action.data,
+          };
+      }
+    },
+    DEFAULT_FORM_STATE,
+  );
 
   const { isWhitelistMode, whitelist, blacklist } = state;
 
@@ -143,15 +119,23 @@ export const App = () => {
     (data: boolean) => () => dispatch({ type: "TOGGLE_MODE", data }),
     [dispatch],
   );
-  // const createChangeListDispatcher = React.useCallback(
-  //   (key: K) => (value: string) =>
-  //     formAction({
-  //       type: "CHANGE_LIST",
-  //       // data: { [key]: value },
-  //       data: {[key]: value},
-  //     } satisfies FormPayloadType),
-  //   [formAction],
-  // );
+  const createChangeListDispatcher = React.useCallback(
+    (key: "whitelist" | "blacklist") => (value: string) =>
+      dispatch({
+        type: "CHANGE_LIST",
+        data: { [key]: value },
+      } as ChangeListPayloadType),
+    [dispatch],
+  );
+
+  const handleSave = React.useCallback(async () => {
+    try {
+      await chrome.storage.local.set({ [STORAGE_KEY_CONFIGS]: state });
+      //   TODO: show toast
+    } catch (e) {
+      //   TODO: show toast
+    }
+  }, [state]);
 
   return (
     <>
@@ -169,43 +153,11 @@ export const App = () => {
               [createToggleModeDispatcher],
             )}
             value={whitelist}
-            onValueChange={React.useCallback(
-              (value: string) =>
-                dispatch({
-                  type: "CHANGE_LIST",
-                  data: { whitelist: value },
-                }),
-              [dispatch],
+            onValueChange={React.useMemo(
+              () => createChangeListDispatcher("whitelist"),
+              [createChangeListDispatcher],
             )}
           />
-          {/*<Form.Group className="my-5">*/}
-          {/*  <Card>*/}
-          {/*    <Card.Header>*/}
-          {/*      <Form.Check*/}
-          {/*        type="radio"*/}
-          {/*        id="whitelist"*/}
-          {/*        name="whitelistMode"*/}
-          {/*        value="whitelist"*/}
-          {/*        checked={isWhitelistMode}*/}
-          {/*        label="Always mute expect these domains (Whitelist mode):"*/}
-          {/*        className="mb-3"*/}
-          {/*      />*/}
-          {/*    </Card.Header>*/}
-          {/*    <Card.Body>*/}
-          {/*      <FloatingLabel*/}
-          {/*        controlId="whitelistTextarea"*/}
-          {/*        label="Domain, one per line"*/}
-          {/*      >*/}
-          {/*        <Form.Control*/}
-          {/*          as="textarea"*/}
-          {/*          placeholder="e.g. www.wikipedia.org"*/}
-          {/*          style={TEXTAREA_STYLE}*/}
-          {/*          disabled={!isWhitelistMode}*/}
-          {/*        />*/}
-          {/*      </FloatingLabel>*/}
-          {/*    </Card.Body>*/}
-          {/*  </Card>*/}
-          {/*</Form.Group>*/}
 
           <Mode
             name="blacklist"
@@ -216,45 +168,13 @@ export const App = () => {
               [createToggleModeDispatcher],
             )}
             value={blacklist}
-            onValueChange={React.useCallback(
-              (value: string) =>
-                dispatch({
-                  type: "CHANGE_LIST",
-                  data: { blacklist: value },
-                }),
-              [dispatch],
+            onValueChange={React.useMemo(
+              () => createChangeListDispatcher("blacklist"),
+              [createChangeListDispatcher],
             )}
           />
-          {/*<Form.Group className="my-5">*/}
-          {/*  <Card>*/}
-          {/*    <Card.Header>*/}
-          {/*      <Form.Check*/}
-          {/*        type="radio"*/}
-          {/*        id="blacklist"*/}
-          {/*        name="whitelistMode"*/}
-          {/*        value="blacklist"*/}
-          {/*        checked={!isWhitelistMode}*/}
-          {/*        label="Only mute these domains (Blacklist mode):"*/}
-          {/*        className="mb-3"*/}
-          {/*      />*/}
-          {/*    </Card.Header>*/}
-          {/*    <Card.Body>*/}
-          {/*      <FloatingLabel*/}
-          {/*        controlId="blacklistTextarea"*/}
-          {/*        label="Domain (one per line)"*/}
-          {/*      >*/}
-          {/*        <Form.Control*/}
-          {/*          as="textarea"*/}
-          {/*          placeholder="e.g. www.wikipedia.org"*/}
-          {/*          style={TEXTAREA_STYLE}*/}
-          {/*          disabled={isWhitelistMode}*/}
-          {/*        />*/}
-          {/*      </FloatingLabel>*/}
-          {/*    </Card.Body>*/}
-          {/*  </Card>*/}
-          {/*</Form.Group>*/}
 
-          <Button variant="primary" className="mt-3">
+          <Button variant="primary" className="mt-3" onClick={handleSave}>
             Save
           </Button>
         </fieldset>
