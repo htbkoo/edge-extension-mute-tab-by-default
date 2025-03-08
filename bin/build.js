@@ -1,3 +1,13 @@
+const buildOptionsPage = async () => {
+  const { BUILD_FOLDER_PATH, SRC_FOLDER_PATH } = require("./constants");
+  const { cpWithLogging } = require("./utils");
+
+  await cpWithLogging(
+    `${SRC_FOLDER_PATH}/options/index.html`,
+    `${BUILD_FOLDER_PATH}/options.html`,
+  );
+};
+
 (async () => {
   console.log("Building `edge-extension-mute-tab-by-default`");
 
@@ -42,6 +52,10 @@
     target: ["chrome58", "firefox57", "safari11", "edge16"],
   });
   console.log("Built service-worker script");
+
+  console.log("Building options page");
+  await buildOptionsPage();
+  console.log("Built options page");
 
   const BUILD_MANIFEST_PATH = path.normalize(
     `${BUILD_FOLDER_PATH}/${MANIFEST_FILENAME}`,
