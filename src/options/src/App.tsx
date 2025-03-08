@@ -1,10 +1,10 @@
 // Reference: https://github.com/aelbore/esbuild-jest/issues/61#issuecomment-990032621
-import * as React from 'react'
-import { useState } from 'react'
-import './App.css'
+import * as React from "react";
+import { useState } from "react";
+import "./App.css";
 
 function App() {
-  const [count, setCount] = useState(0)
+  const [count, setCount] = useState(0);
 
   return (
     <>
@@ -22,7 +22,7 @@ function App() {
         Click on the Vite and React logos to learn more
       </p>
     </>
-  )
+  );
 }
 
-export default App
+export default App;
